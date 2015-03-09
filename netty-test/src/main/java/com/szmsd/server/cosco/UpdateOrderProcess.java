@@ -14,7 +14,7 @@ public class UpdateOrderProcess implements JsonAware{
 	private XJDataNode node ;
 	
 	/**
-	 * 例子 http://127.0.0.1:8088/updateOrder?content={"order_code":"20150227101","order_ename":"TianJun"}
+	 * 例子 http://127.0.0.1:8088/updateOrder?content={"order_code":"coc333","order_ename":"TianJun12312"}
 	 * @Description:
 	 * @author TianJun
 	 * @date 2015年3月5日

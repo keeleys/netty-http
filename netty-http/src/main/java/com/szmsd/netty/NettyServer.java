@@ -79,6 +79,7 @@ public final class NettyServer {
 		// 配置ActiveRecord插件
         ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
         arp.setDialect(new OracleDialect()) ;
+        arp.setShowSql(true);
         arp.setDevMode(false);
 
         c3p0Plugin.start();
@@ -104,8 +105,8 @@ public final class NettyServer {
 		runNetty();
 	}
 	
-	public static void start() throws Exception {
-		new NettyServer().initDb().setPort(8088).run();
+	public static void start(int prop) throws Exception {
+		new NettyServer().initDb().setPort(prop).run();
 	}
 	
 }
