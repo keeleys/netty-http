@@ -16,7 +16,7 @@
 
 2. 新建配置文件ctrl.txt,jdbc.properties,配置扫描的包和jdbc信息
 
-```
+```java
 //扫描的包
 ctrl_scan_path = com.keeley.server
 //xml/json 内容使用的参数
