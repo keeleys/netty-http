@@ -3,7 +3,7 @@ package com.szmsd.server.test;
 import java.util.Map;
 
 import com.szmsd.anno.MsdCtrl;
-import com.szmsd.core.RequestAware;
+import com.szmsd.core.aware.RequestAware;
 import com.szmsd.util.UriKit;
 
 
@@ -17,7 +17,6 @@ import com.szmsd.util.UriKit;
 @MsdCtrl(method="process",url="/pro")
 public class MyProcess implements RequestAware{
 	private Map<String ,String> request;
-	
 	/**
 	 * 
 	 * @Description: 在这里写自己的业务，然后返回String给调用方

@@ -7,6 +7,10 @@ import org.dom4j.DocumentException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.szmsd.core.aware.JsonAware;
+import com.szmsd.core.aware.RequestAware;
+import com.szmsd.core.aware.ValidAware;
+import com.szmsd.core.aware.XmlAware;
 import com.szmsd.util.UriKit;
 import com.ttianjun.common.kit.PropKit;
 import com.ttianjun.common.kit.parse.JsonUtil;
@@ -23,19 +27,24 @@ public class DefaultProcess {
 	public String process(Map<String ,String> request) throws Exception {
 		String uri = request.get("uri");
 		String result="";
-		String content = request.get(PropKit.get("content_param", "content"));
+		String content = request.get(PropKit.use("conf.properties").get("content_param"));
+		String sign = request.get(PropKit.use("conf.properties").get("sign_param"));
+		
 		uri =UriKit.getUrl(uri);
 		for(MsdCtrlRef msdCtrlRef : AutoBindCtrl.msdCtrlRefList){
 			if(uri.equals(msdCtrlRef.getUrl())){
 				Object o =msdCtrlRef.getModelClass().newInstance();
 				
+				if( o instanceof ValidAware){
+					String checkStr=((ValidAware)o).checkSign(sign, content);
+					if(checkStr!=null) return checkStr;
+				}
 				if( o instanceof RequestAware){
 					((RequestAware)o).setRequest(request);
 				}
 				if(o instanceof XmlAware){
 					((XmlAware)o).setXmlDataNode(dealBusinessXml(content));
-				}
-				if(o instanceof JsonAware){
+				}else if(o instanceof JsonAware){
 					((JsonAware)o).setJsonDataNode(dealBusinessJson(content));
 				}
 				

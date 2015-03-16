@@ -1,2 +1,0 @@
-ctrl_scan_path = com.keeley.server
-content_param = content

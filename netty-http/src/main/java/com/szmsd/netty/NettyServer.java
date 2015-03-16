@@ -21,15 +21,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.dialect.OracleDialect;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import com.szmsd.core.AutoBindCtrl;
-import com.szmsd.db.JfinalDb;
 import com.ttianjun.common.kit.PropKit;
-
-/**
- * 
- * @author TianJun
- * @Date 2015年3月2日
- * @Description:netty核心服务类
- */
 public final class NettyServer {
 	
 	private  Integer port = 8088;
@@ -70,9 +62,8 @@ public final class NettyServer {
 		}
 	}
 	
-	public NettyServer initDb(){
+	public NettyServer runDb(){
 		PropKit.use("jdbc.properties");
-		
 		C3p0Plugin c3p0Plugin = new C3p0Plugin(PropKit.get("db.oracle.url"), PropKit.get("db.oracle.username"), 
 				PropKit.get("db.oracle.password"),PropKit.get("driverClassName"));
 
@@ -87,8 +78,8 @@ public final class NettyServer {
         return this;
 	}
 	
-	public void initConf(){
-		PropKit.use("ctrl.txt");
+	public void runAutoBind(){
+		PropKit.use("conf.properties");
 		AutoBindCtrl autoBindCtrl = new AutoBindCtrl();
 		autoBindCtrl.addScanPackages(PropKit.get("ctrl_scan_path"));
 		autoBindCtrl.bind();
@@ -101,12 +92,13 @@ public final class NettyServer {
 	 * @return
 	 */
 	public void run() throws InterruptedException{
-		initConf();
+		runDb();
+		runAutoBind();
 		runNetty();
 	}
 	
 	public static void start(int prop) throws Exception {
-		new NettyServer().initDb().setPort(prop).run();
+		new NettyServer().setPort(prop).run();
 	}
 	
 }

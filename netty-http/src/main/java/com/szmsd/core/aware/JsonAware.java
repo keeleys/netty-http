@@ -1,4 +1,4 @@
-package com.szmsd.core;
+package com.szmsd.core.aware;
 
 import com.ttianjun.common.kit.parse.XJDataNode;
 

@@ -1,7 +1,7 @@
 package com.szmsd.server.test;
 
 import com.szmsd.anno.MsdCtrl;
-import com.szmsd.core.JsonAware;
+import com.szmsd.core.aware.JsonAware;
 import com.ttianjun.common.kit.parse.XJDataNode;
 
 @MsdCtrl(url = "/json")
