@@ -29,7 +29,7 @@ public abstract class NettyXmlProcess  implements XmlAware,ValidAware{
 			e.printStackTrace();
 		}
 		log.debug("加密后的sign:"+newSign);
-		boolean flag = sign.equals(newSign);
+		boolean flag = newSign.equals(sign);
 		if(flag)return null;
 		return "<response><errmsg>签名验证失败<errmsg/></response>";
 	}
