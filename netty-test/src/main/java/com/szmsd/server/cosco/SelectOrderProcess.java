@@ -16,8 +16,8 @@ public class SelectOrderProcess extends NettyJsonProcess{
 	/**
 	 * 例子 http://127.0.0.1:8088/selectOrder?sign=N2E3ZjdlN2UxOGE4Yzk3YWQwOGE4ZDk4MWQzNzlkMjc=&content={"order_code":"coc333"}
 	 * {"order_code":"coc333"}szmsd
-	 * 7a7f7e7e18a8c97ad08a8d981d379d27
-	 * N2E3ZjdlN2UxOGE4Yzk3YWQwOGE4ZDk4MWQzNzlkMjc=
+	 * md5 32位小写加密：7a7f7e7e18a8c97ad08a8d981d379d27
+	 * base64加密md5 ：N2E3ZjdlN2UxOGE4Yzk3YWQwOGE4ZDk4MWQzNzlkMjc=
 	 * @Description:
 	 * @author TianJun
 	 * @date 2015年3月5日
