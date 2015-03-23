@@ -24,14 +24,49 @@ import com.szmsd.core.AutoBindCtrl;
 import com.ttianjun.common.kit.PropKit;
 public final class NettyServer {
 	
-	private  Integer port = 8088;
-	private static Logger log = LoggerFactory.getLogger(NettyServer.class); 
+	public static void start(int prop) throws Exception {
+		new NettyServer().setPort(prop).run();
+	}
+	private Integer port = 8088; 
+	private String dialect="oracle";
+	private static Logger log = LoggerFactory.getLogger(NettyServer.class);
 	
-	public NettyServer setPort(Integer port) {
-		this.port = port;
-		return this;
+	/**
+	 * 
+	 * @Description:启动服务
+	 * @author TianJun
+	 * @date 2015年3月2日
+	 * @return
+	 */
+	public void run() throws InterruptedException{
+		runDb();
+		runAutoBind();
+		runNetty();
 	}
 	
+	public void runAutoBind(){
+		PropKit.use("conf.properties");
+		AutoBindCtrl autoBindCtrl = new AutoBindCtrl();
+		autoBindCtrl.addScanPackages(PropKit.get("ctrl_scan_path"));
+		autoBindCtrl.bind();
+	}
+	
+	public NettyServer runDb(){
+		PropKit.use("jdbc.properties");
+		C3p0Plugin c3p0Plugin = new C3p0Plugin(PropKit.get("db.oracle.url"), PropKit.get("db.oracle.username"), 
+				PropKit.get("db.oracle.password"),PropKit.get("driverClassName"));
+
+		// 配置ActiveRecord插件
+        ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
+        if(!dialect.equals("mysql"))
+        	arp.setDialect(new OracleDialect());
+        arp.setShowSql(true);
+        arp.setDevMode(false);
+
+        c3p0Plugin.start();
+        arp.start();
+        return this;
+	}
 	public void runNetty() throws InterruptedException{
 		  
 		EventLoopGroup parentGroup = new NioEventLoopGroup(1);
@@ -62,43 +97,22 @@ public final class NettyServer {
 		}
 	}
 	
-	public NettyServer runDb(){
-		PropKit.use("jdbc.properties");
-		C3p0Plugin c3p0Plugin = new C3p0Plugin(PropKit.get("db.oracle.url"), PropKit.get("db.oracle.username"), 
-				PropKit.get("db.oracle.password"),PropKit.get("driverClassName"));
-
-		// 配置ActiveRecord插件
-        ActiveRecordPlugin arp = new ActiveRecordPlugin(c3p0Plugin);
-        arp.setDialect(new OracleDialect()) ;
-        arp.setShowSql(true);
-        arp.setDevMode(false);
-
-        c3p0Plugin.start();
-        arp.start();
-        return this;
+	public NettyServer setPort(Integer port) {
+		this.port = port;
+		return this;
 	}
-	
-	public void runAutoBind(){
-		PropKit.use("conf.properties");
-		AutoBindCtrl autoBindCtrl = new AutoBindCtrl();
-		autoBindCtrl.addScanPackages(PropKit.get("ctrl_scan_path"));
-		autoBindCtrl.bind();
-	}
+
 	/**
 	 * 
-	 * @Description:启动服务
 	 * @author TianJun
-	 * @date 2015年3月2日
-	 * @return
+	 * @date 2015年3月19日
+	 * @param dialect : mysql , oracle
 	 */
-	public void run() throws InterruptedException{
-		runDb();
-		runAutoBind();
-		runNetty();
+	public NettyServer setDialect(String dialect) {
+		this.dialect = dialect;
+		return this;
 	}
 	
-	public static void start(int prop) throws Exception {
-		new NettyServer().setPort(prop).run();
-	}
+	
 	
 }
